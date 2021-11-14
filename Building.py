@@ -1,20 +1,21 @@
 import json
 import Elevator
 
+
 class Building(object):
-    _max_floor=0
-    _min_floor=0
-    _elevators = []
+    max_floor = 0
+    min_floor = 0
+    elevators = []
 
     def __init__(self, json_file):
-        j = json.loads(json_file)
+        with open(json_file) as f:
+            j = json.load(f)
 
-        self._min_floor = j["_minFloor"]
-        self._max_floor = j["_maxFloor"]
+        self.min_floor = j["_minFloor"]
+        self.max_floor = j["_maxFloor"]
 
         for elevator in j["_elevators"]:
-            self._elevators.append(Elevator.Elevator(elevator['_id'], ))
-
-
-
-
+            self.elevators.append(Elevator.Elevator(elevator['_id'], elevator['_speed'], elevator['_minFloor'],
+                                                    elevator['_maxFloor'], elevator['_closeTime'],
+                                                    elevator['_openTime'], elevator['_startTime'],
+                                                    elevator['_stopTime']))

@@ -1,3 +1,5 @@
+
+
 class Elevator(object):
 
     def __init__(self, id, speed, min_f, max_f, close_t, open_t, start_t, stop_t):
