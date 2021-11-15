@@ -25,7 +25,7 @@ class Building(object):
         self.min_floor = j["_minFloor"]
         self.max_floor = j["_maxFloor"]
 
-        # Create an elevator obj for each elevator element in the JSON file and add it to the building elevator list.
+        # Create an elevator obj for each elevator element from the JSON and add it to the building elevator list.
         for elevator in j["_elevators"]:
             self.elevators.append(Elevator(elevator['_id'], elevator['_speed'], elevator['_minFloor'],
                                            elevator['_maxFloor'], elevator['_closeTime'], elevator['_openTime'],
