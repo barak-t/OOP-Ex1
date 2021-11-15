@@ -3,6 +3,8 @@ import csv
 
 class Call(object):
 
+    allocate_to = -1
+
     def __init__(self, time, source_f, dest_f):
         self.time = float(time)
         self.source_f = int(source_f)
