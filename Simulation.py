@@ -4,16 +4,18 @@ Module for Simulation class.
 import Call
 import Building
 
+
 class Simulation(object):
     """
     Class for simulation the offline elevator algorithm.
     """
     def __init__(self, building_json, calls_csv):
         self.building = Building.Building(building_json)
-        self.calls = Call.Call.create_calls_csv(calls_csv)
+        self.calls = Call.Call.load_calls_csv(calls_csv)
 
     def run(self):
-        pass
+        for c in self.calls:
+            self.allocate_elevator(c)
 
     def save(self, result_csv_path):
         """
@@ -21,7 +23,7 @@ class Simulation(object):
         Args:
             result_csv_path: the path to the output file.
         """
-        pass
+        Call.Call.save_calls_csv(result_csv_path, self.calls)
 
     def allocate_elevator(self, call):
         """
@@ -29,4 +31,4 @@ class Simulation(object):
         Args:
             call: The call object to assign an elevator.
         """
-        pass
+        call.allocate_to = self.building.elevators[0].id
