@@ -31,4 +31,9 @@ class Simulation(object):
         Args:
             call: The call object to assign an elevator.
         """
-        call.allocate_to = self.building.elevators[0].id
+        # if there is only one elevator, allocate it.
+        if len(self.building.elevators) == 1:
+            call.allocate_to = self.building.elevators[0].id
+            return
+
+
