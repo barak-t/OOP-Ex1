@@ -1,7 +1,12 @@
+"""
+Module for Elevator class.
+"""
 
 
 class Elevator(object):
-
+    """
+    Represents an elevator.
+    """
     def __init__(self, id, speed, min_f, max_f, close_t, open_t, start_t, stop_t):
         self.id = id
         self.speed = speed

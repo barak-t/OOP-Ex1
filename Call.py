@@ -1,7 +1,13 @@
+"""
+Module for Call class.
+"""
 import csv
 
 
 class Call(object):
+    """
+    Represents a Call
+    """
 
     allocate_to = -1
 
@@ -11,13 +17,27 @@ class Call(object):
         self.dest_f = int(dest_f)
 
     def its_up(self):
+        """
+        Returns if the call if for moving up.
+        """
         return self.dest_f > self.source_f
 
     def its_down(self):
+        """
+        Returns if the call if for moving down.
+        """
         return not self.its_up()
 
     @staticmethod
     def create_calls_csv(csv_path):
+        """
+        Creates list with Calls from a CSV file.
+        Args:
+            csv_path: The path to the CSV file.
+
+        Returns:
+            List of Calls.
+        """
         calls = []
         with open(csv_path) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=["s", "time", "src", "dst", "flag", "elev"])
@@ -27,5 +47,5 @@ class Call(object):
         return calls
 
     def __repr__(self):
-        return "<Call (time:{t} src:{s} dst:{d})>".format(t=self.time, s=self.source_f, d=self.dest_f)
+        return "<Call(time={t}, src={s}, dst={d})>".format(t=self.time, s=self.source_f, d=self.dest_f)
 
