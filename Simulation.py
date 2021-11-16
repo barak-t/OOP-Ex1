@@ -4,6 +4,7 @@ Module for Simulation class.
 import Call
 import Building
 
+TIME_AFTER_LAST_CALL = 120
 
 class Simulation(object):
     """
@@ -12,10 +13,20 @@ class Simulation(object):
     def __init__(self, building_json, calls_csv):
         self.building = Building.Building(building_json)
         self.calls = Call.Call.load_calls_csv(calls_csv)
+        # gets the total time of the simulation (lattes call + after time simulator)
+        self.total_time = max(c.time for c in self.calls) + TIME_AFTER_LAST_CALL
 
     def run(self):
-        for c in self.calls:
-            self.allocate_elevator(c)
+        # for c in self.calls:
+        #     self.allocate_elevator(c)
+
+        for t in range(self.total_time):
+            for e in self.building.elevators:
+                e.update_calls(t)
+                e.update_curr_pos(t)
+
+            # TODO: Check if the first call that not allocate to any elevators (not_allocate_calls) is relevant.
+
 
     def save(self, result_csv_path):
         """
@@ -34,7 +45,14 @@ class Simulation(object):
         # if there is only one elevator, allocate it.
         if len(self.building.elevators) == 1:
             call.allocate_to = self.building.elevators[0].id
-            self.building.elevators[0].inprogress_calls.append(call)  # Add this call to this elevator list
+            self.building.elevators[0].add_call(call)  # Add this call to this elevator list
             return
 
+        # check the most fastest arrive elevator to the call
+        # TODO: Implement.
 
+    def not_allocate_calls(self):
+        """
+        Returns the calls that not allocate to any elevator sorted by time.
+        """
+        return sorted([c for c in self.calls if c.allocate_to == -1], key=lambda c: c.time)
