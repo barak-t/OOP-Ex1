@@ -17,16 +17,17 @@ class Simulation(object):
         self.total_time = max(c.time for c in self.calls) + TIME_AFTER_LAST_CALL
 
     def run(self):
-        # for c in self.calls:
-        #     self.allocate_elevator(c)
-
         for t in range(self.total_time):
             for e in self.building.elevators:
                 e.update_calls(t)
                 e.update_curr_pos(t)
 
-            # TODO: Check if the first call that not allocate to any elevators (not_allocate_calls) is relevant.
-
+            # Allocate an elevator for each calls that not allocate to elevator and its time relevant.
+            calls_to_handle = self.not_allocate_calls() 
+            for c in calls_to_handle:
+                self.allocate_elevator(c)
+                if c.time > t:
+                    break
 
     def save(self, result_csv_path):
         """
@@ -44,12 +45,14 @@ class Simulation(object):
         """
         # if there is only one elevator, allocate it.
         if len(self.building.elevators) == 1:
-            call.allocate_to = self.building.elevators[0].id
-            self.building.elevators[0].add_call(call)  # Add this call to this elevator list
-            return
+            fastest_elev = self.building.elevators[0]
 
-        # check the most fastest arrive elevator to the call
-        # TODO: Implement.
+        else:
+            # Gets the most fastest arrive elevator to this call
+            fastest_elev = min((e for e in self.building.elevators),key=lambda e:e.arrive_time(call.source_f))
+
+        call.allocate_to = fastest_elev.id
+        fastest_elev.add_call(call)  # Add this call to this elevator list
 
     def not_allocate_calls(self):
         """
