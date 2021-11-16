@@ -56,3 +56,4 @@ class Simulation(object):
         Returns the calls that not allocate to any elevator sorted by time.
         """
         return sorted([c for c in self.calls if c.allocate_to == -1], key=lambda c: c.time)
+

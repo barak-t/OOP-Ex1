@@ -17,7 +17,6 @@ class Elevator(object):
 
     curr_pos = 0
     in_progress_calls = []
-    _status = Status.LEVEL
 
     def __init__(self, id, speed, min_f, max_f, close_t, open_t, start_t, stop_t):
         self.id = id
