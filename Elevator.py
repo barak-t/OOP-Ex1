@@ -2,7 +2,7 @@
 Module for Elevator class.
 """
 from enum import Enum
-
+import Call
 
 class Status(Enum):
     MOVING_DOWN = -1
@@ -28,35 +28,36 @@ class Elevator(object):
         self.start_t = start_t
         self.stop_t = stop_t
 
-    def arrive_time(self, dest_floor):
+    def arrive_time(self, dest_floor, way_stops=0):
         """
         Return the arrive time to a floor base on the current position of the elevator.
         Args:
-            dest_floor:
+            dest_floor: the destination floor of the elevator
+            way_stops: how many times we need to stop
 
-        Returns:
+        Returns: the time its takes to arrive
 
         """
-        # TODO: Implement.
-        pass
+        return abs(dest_floor - self.curr_pos) / self.speed + \
+               (self.stop_t + self.open_t + self.close_t + self.start_t) * (way_stops + 1)
 
     def add_call(self, call):
         """
         Add a call to the elevator.
         Args:
-            call:
+            call: the call to add
         """
-        # TODO: Implement.
-        pass
+        self.in_progress_calls.append(call)
 
     def update_calls(self, current_time):
         """
         Removes the already done calls from the calls list.
         Args:
-            current_time:
+            current_time: the time now
         """
-        # TODO: Implement.
-        pass
+        for call in self.in_progress_calls:
+            if call.status == Call.Status.DONE:
+                self.in_progress_calls.remove(call)
 
     def update_curr_pos(self, current_time):
         """

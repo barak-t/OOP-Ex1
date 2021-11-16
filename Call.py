@@ -3,6 +3,15 @@ Module for Call class.
 """
 import csv
 
+from enum import Enum
+
+
+class Status(Enum):
+    INIT = 0
+    GOING_TO_SRC = 1
+    GOING_TO_DEST = 2
+    DONE = 3
+
 
 class Call(object):
     """
@@ -17,6 +26,7 @@ class Call(object):
         self.dest_f = int(dest_f)
         self.s = s
         self.flag = f
+        self.status = Status.INIT
 
     def its_up(self):
         """
