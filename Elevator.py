@@ -7,6 +7,10 @@ class Elevator(object):
     """
     Represents an elevator.
     """
+
+    curr_pos = 0
+    inprogress_calls = []
+
     def __init__(self, id, speed, min_f, max_f, close_t, open_t, start_t, stop_t):
         self.id = id
         self.speed = speed
@@ -16,3 +20,10 @@ class Elevator(object):
         self.open_t = open_t
         self.start_t = start_t
         self.stop_t = stop_t
+
+    def arrive_time(self, dest_floor):
+        pass
+
+    def update_calls(self, ):
+        pass
+

@@ -34,6 +34,7 @@ class Simulation(object):
         # if there is only one elevator, allocate it.
         if len(self.building.elevators) == 1:
             call.allocate_to = self.building.elevators[0].id
+            self.building.elevators[0].inprogress_calls.append(call)  # Add this call to this elevator list
             return
 
 
