@@ -18,7 +18,7 @@ It's not easy to know where each elevator locates every time (because its offlin
 
 <br />
 
-####Algorithm
+####Algorithm:
 Our algorithm check where is our elevators all the time by using all the technical details and its calls. 
 The algorithm allocate calls to elevator. 
 The calls select according to their distance from specific elevator and the elevator travel direction.
