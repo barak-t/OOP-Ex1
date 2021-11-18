@@ -5,10 +5,17 @@ import argparse
 from Simulation import Simulation
 
 
-def main():
+def main(b_json, c_csv, out_csv):
     """
     The main function of the program.
     """
+    # Run the simulation with the given args and save the output.
+    s = Simulation(b_json, c_csv)
+    s.run()
+    s.save(out_csv)
+
+
+if __name__ == '__main__':
     # Create parser for the required arguments.
     parser = argparse.ArgumentParser(description="Offline algorithm for assign calls for elevators.",
                                      usage="Ex1.py <Building.json> <Calls.csv> <output.csv>")
@@ -17,11 +24,4 @@ def main():
     parser.add_argument("output_file", help="The path to the output CSV file")
     args = parser.parse_args()
 
-    # Run the simulation with the given args and save the output.
-    s = Simulation(args.building_json_file, args.calls_csv_file)
-    s.run()
-    s.save(args.output_file)
-
-
-if __name__ == '__main__':
-    main()
+    main(args.building_json_file, args.calls_csv_file, args.output_file)

@@ -18,8 +18,6 @@ class Call(object):
     Represents a Call
     """
 
-    allocate_to = -1
-
     def __init__(self, s, time, source_f, dest_f, f):
         self.time = float(time)
         self.source_f = int(source_f)
@@ -27,6 +25,7 @@ class Call(object):
         self.s = s
         self.flag = f
         self.status = Status.INIT
+        self.allocate_to = -1
 
     def its_up(self):
         """
