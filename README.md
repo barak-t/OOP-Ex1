@@ -39,6 +39,19 @@ We save for each elevator its current time and last location and do the folowing
 
 #### :green_circle: Results:
 
-Building | call | total waiting time | average waiting time per call | uncompleted calls | certificate | 
--------- | ---- | ------------------ | ----------------------------- |------------------ |------------ |
-b1       | 55   | ------------------ | ----------------------------- |------------------ |------------ |
+Building | call | average waiting time per call | uncompleted calls | 
+-------- | ---- | ----------------------------- |------------------ |
+   B1    |  a   |                               |                   |
+   B2    |  a   |                               |                   |
+   B3    |  a   |                               |                   |
+   B3    |  b   |                               |                   |
+   B3    |  c   |                               |                   |
+   B3    |  d   |                               |                   |
+   B4    |  a   |                               |                   |
+   B4    |  b   |                               |                   |
+   B4    |  c   |                               |                   |
+   B4    |  d   |                               |                   |
+   B5    |  a   |                               |                   |
+   B5    |  b   |                               |                   |
+   B5    |  c   |                               |                   |
+   B5    |  d   |                               |                   |
