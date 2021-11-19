@@ -56,21 +56,25 @@ class Elevator(object):
         on_the_way = []
 
         for c in self.in_progress_calls:
-            if c.its_up() and is_up:
+            if c.its_up() and is_up:  # If the status of this elev is up and the elev actually need to up for this call
                 if c.status == Call.Status.GOING_TO_SRC and dest_floor > c.source_f > self.curr_pos:
                     on_the_way.append(c.source_f)
+                    if dest_floor > c.dest_f:
+                        on_the_way.append(c.dest_f)
                 elif c.status == Call.Status.GOING_TO_DEST and dest_floor > c.dest_f > self.curr_pos:
                     on_the_way.append(c.dest_f)
             elif c.its_down() and not is_up:
                 if c.status == Call.Status.GOING_TO_SRC and dest_floor < c.source_f < self.curr_pos:
                     on_the_way.append(c.source_f)
+                    if dest_floor < c.dest_f:
+                        on_the_way.append(c.dest_f)
                 elif c.status == Call.Status.GOING_TO_DEST and dest_floor < c.dest_f < self.curr_pos:
                     on_the_way.append(c.dest_f)
 
-        way_stops = len(set(on_the_way))
+        way_stops = len(set(on_the_way))  # Where the elev need to stop in its way to specific floor
 
         return abs(dest_floor - self.curr_pos) / self.speed + \
-               (self.stop_t + self.open_t + self.close_t + self.start_t) * (way_stops + 1)
+            (self.stop_t + self.open_t + self.close_t + self.start_t) * (way_stops + 1)
 
     def add_call(self, call):
         """
