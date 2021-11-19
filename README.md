@@ -33,6 +33,8 @@ We save for each elevator its current time and last location and do the folowing
 <br />
 
 #### :green_circle: Diagram:
+![image](https://user-images.githubusercontent.com/64011788/142690418-9bd7a28a-e991-42a3-82ba-f02bc1b5a8ee.png)
+
 
 #### :green_circle: Results:
 
