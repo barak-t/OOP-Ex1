@@ -1,14 +1,6 @@
 """
 Module for Elevator class.
 """
-from enum import Enum
-import Call
-
-
-class Status(Enum):
-    MOVING_DOWN = -1
-    LEVEL = 0
-    MOVING_UP = 1
 
 
 class Elevator(object):
@@ -25,148 +17,40 @@ class Elevator(object):
         self.open_t = open_t
         self.start_t = start_t
         self.stop_t = stop_t
-        self._status = Status.LEVEL
-        self._last_time_moved = 0
+        self.last_pos = 0
         self.curr_pos = 0
-        self.in_progress_calls = []
-        self.delay = 0
+        self.last_time = 0
+        self.time = 0
+        self.delay = self.close_t + self.start_t + self.stop_t + self.open_t
 
     def its_up(self):
-        return self.status == Status.MOVING_UP
+        return self.last_pos < self.curr_pos
 
-    def its_down(self):
-        return self.status == Status.MOVING_DOWN
-
-    def its_level(self):
-        return self.status == Status.LEVEL
-
-    def update_calls(self):
+    def arrive_time(self, call):
         """
-        Removes the already done calls from the calls list.
-        """
-        for call in self.in_progress_calls:
-            if call.status == Call.Status.DONE:
-                self.in_progress_calls.remove(call)
-
-    def arrive_time(self, dest_floor, way_stops=0):
-        """
-        Return the arrive time to a floor base on the current position of the elevator.
+        Return the arrive time to a dest floor of a call base on the current position of the elevator.
         Args:
-            dest_floor: the destination floor of the elevator
-            way_stops: how many times we need to stop
+            call: the call to calculate for.
 
         Returns: the time its takes to arrive
         """
+        time_to_src = abs(self.curr_pos - call.source_f)/self.speed + self.delay
+        time_src_dst = abs(call.source_f - call.dest_f)/self.speed + self.delay
+        return time_to_src + time_src_dst
 
-        is_up = True if dest_floor > self.curr_pos else False
+    def arrive_to(self, src, dest):
+        return abs(src - dest) / self.speed + self.delay
 
-        on_the_way = []
-
-        for c in self.in_progress_calls:
-            if c.its_up() and is_up:  # If the status of this elev is up and the elev actually need to up for this call
-                if c.status == Call.Status.GOING_TO_SRC and dest_floor >= c.source_f >= self.curr_pos:
-                    on_the_way.append(c.source_f)
-                    if dest_floor > c.dest_f:
-                        on_the_way.append(c.dest_f)
-                elif c.status == Call.Status.GOING_TO_DEST and dest_floor >= c.dest_f >= self.curr_pos:
-                    on_the_way.append(c.dest_f)
-            elif c.its_down() and not is_up:
-                if c.status == Call.Status.GOING_TO_SRC and dest_floor <= c.source_f <= self.curr_pos:
-                    on_the_way.append(c.source_f)
-                    if dest_floor < c.dest_f:
-                        on_the_way.append(c.dest_f)
-                elif c.status == Call.Status.GOING_TO_DEST and dest_floor <= c.dest_f <= self.curr_pos:
-                    on_the_way.append(c.dest_f)
-
-        way_stops = len(set(on_the_way))  # Where the elev need to stop in its way to specific floor
-
-        return abs(dest_floor - self.curr_pos) / self.speed + \
-            (self.stop_t + self.open_t + self.close_t + self.start_t) * (way_stops + 1)
-
-    def add_call(self, call):
+    def add_call(self, call, t=0):
         """
         Add a call to the elevator.
         Args:
-            call: the call to add
+            call: the call to add.
+            t: the time the elevator will get the the dest of the call.
         """
         call.allocate_to = self.id
-        self.in_progress_calls.append(call)
+        self.last_pos = self.curr_pos
+        self.curr_pos = call.dest_f
 
-    def update_curr_pos(self, current_time):
-        """
-        Change the current position of the elevator base on the calls the elevator run, and the status of the calls.
-        Args:
-            current_time: the simulator current time.
-        """
-        if self.status == Status.LEVEL:
-            self.delay = self.close_t + self.start_t
-
-        elif self._last_time_moved + 1/self.speed + self.delay <= current_time:
-            self.delay = 0
-            if self.status == Status.MOVING_UP:
-                self.curr_pos += 1
-                for c in self.in_progress_calls:
-                    if c.status == Call.Status.GOING_TO_DEST and c.its_up() and c.dest_f == self.curr_pos:
-                        c.status = Call.Status.DONE
-                        self.delay = self.stop_t + self.open_t + self.close_t + self.start_t
-                    if c.status == Call.Status.GOING_TO_SRC and c.source_f == self.curr_pos:
-                        c.status = Call.Status.GOING_TO_DEST
-                        self.delay = self.stop_t + self.open_t + self.close_t + self.start_t
-
-            elif self.status == Status.MOVING_DOWN:
-                self.curr_pos -= 1
-                for c in self.in_progress_calls:
-                    if c.status == Call.Status.GOING_TO_DEST and c.its_down() and c.dest_f == self.curr_pos:
-                        c.status = Call.Status.DONE
-                        self.delay = self.stop_t + self.open_t + self.close_t + self.start_t
-                    if c.status == Call.Status.GOING_TO_SRC and c.source_f == self.curr_pos:
-                        c.status = Call.Status.GOING_TO_DEST
-                        self.delay = self.stop_t + self.open_t + self.close_t + self.start_t
-
-            self._last_time_moved = current_time
-
-            # print(f"{current_time}, elev:{self.id}, pos:{self.curr_pos}, status:{self.status}")
-
-    @property
-    def status(self):
-        return self._status
-
-    def update_status(self):
-        """
-        Updating elevator status (Status.LEVE, Status.MOVING_UP, Status.MOVING_DOWN)
-        """
-        if not self.in_progress_calls:
-            self._status = Status.LEVEL
-
-        elif self._status == Status.LEVEL:
-            init_calls = [c for c in self.in_progress_calls if c.status == Call.Status.INIT]
-            if init_calls:
-                closest_call = min(init_calls, key=lambda c: self.arrive_time(c.source_f))
-                closest_call.status = Call.Status.GOING_TO_SRC
-                self._status = Status.MOVING_UP if self.curr_pos < closest_call.source_f else Status.MOVING_DOWN
-
-        elif self._status == Status.MOVING_UP:
-            to_up_calls = False
-            for c in self.in_progress_calls:
-                if c.status == Call.Status.INIT and c.its_up() and c.source_f > self.curr_pos:
-                    c.status = Call.Status.GOING_TO_SRC
-
-                if not to_up_calls and ((c.status == Call.Status.GOING_TO_SRC and c.source_f > self.curr_pos) or
-                                        (c.status == Call.Status.GOING_TO_DEST and c.dest_f > self.curr_pos)):
-                    to_up_calls = True
-
-            if (not to_up_calls) and self.in_progress_calls:
-                self._status = Status.MOVING_DOWN
-
-        elif self._status == Status.MOVING_DOWN:
-            to_down_calls = False
-            for c in self.in_progress_calls:
-                if c.status == Call.Status.INIT and c.its_down() and c.source_f < self.curr_pos:
-                    c.status = Call.Status.GOING_TO_SRC
-
-                if not to_down_calls and ((c.status == Call.Status.GOING_TO_SRC and c.source_f < self.curr_pos) or
-                                          (c.status == Call.Status.GOING_TO_DEST and c.dest_f < self.curr_pos)):
-                    to_down_calls = True
-
-            if (not to_down_calls) and self.in_progress_calls:
-                self._status = Status.MOVING_UP
+        self.last_time = self.time
+        self.time = call.time + t
