@@ -27,8 +27,8 @@ We save for each elevator its current time and last location and do the folowing
 1.  Our algorithm go over all the calls.
 2.  It's takes every time one call.
 3.  It's saves for every elevator it's current floor and it's last location time.
-4.  it's Checks the time it will take to drive in each elevator by using the technical details of the elevetor, and its last location time.
-5.  Choose the best time elevetor (fom src ---> dest) and allocate this elevator this call.
+4.  it's Checks the time it will take to drive in each elevator by using the technical details of the elevator, and its last location time.
+5.  Choose the best time elevator (fom src ---> dest) and allocate this elevator this call.
 
 <br />
 
