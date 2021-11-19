@@ -30,3 +30,4 @@ class Building(object):
             self.elevators.append(Elevator(elevator['_id'], elevator['_speed'], elevator['_minFloor'],
                                            elevator['_maxFloor'], elevator['_closeTime'], elevator['_openTime'],
                                            elevator['_startTime'], elevator['_stopTime']))
+

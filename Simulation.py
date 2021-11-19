@@ -70,3 +70,4 @@ class Simulation(object):
             result_csv_path: the path to the output file.
         """
         Call.Call.save_calls_csv(result_csv_path, self.calls)
+

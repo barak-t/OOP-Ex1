@@ -63,3 +63,4 @@ class Elevator(object):
 
         self.last_time = self.time
         self.time = call.time + t
+
