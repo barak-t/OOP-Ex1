@@ -44,7 +44,7 @@ Building | call | average waiting time per call | uncompleted calls |
    B1    |  a   |            112.92             |      0            |
    B2    |  a   |            46.2               |       0           |
    B3    |  a   |            37.37              |          0        |
-   B3    |  b   |            527.23             |          171      |
+   B3    |  b   |            527.23             |          172      |
    B3    |  c   |            578.23             |          103      |
    B3    |  d   |            550.4              |         56        |
    B4    |  a   |            26.11              |         0         |
