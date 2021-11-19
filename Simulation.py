@@ -4,12 +4,15 @@ Module for Simulation class.
 import Call
 import Building
 import Elevator
+import time
 
 TIME_AFTER_LAST_CALL = 120
 TIME_STEPS = 0.2
 
+
 class ParametersError(Exception):
     pass
+
 
 class Simulation(object):
     """
@@ -28,6 +31,7 @@ class Simulation(object):
 
     def run(self):
         t = 0
+
         while(t < self.total_time):
             for e in self.building.elevators:
                 e.update_calls()
@@ -64,7 +68,6 @@ class Simulation(object):
 
             fastest_elev = min(elevs, key=lambda e:e.arrive_time(call.source_f))
 
-        call.allocate_to = fastest_elev.id
         fastest_elev.add_call(call)  # Add this call to this elevator list
 
     def not_allocate_calls(self, t):
