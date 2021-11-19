@@ -9,7 +9,6 @@
 - https://www.javatpoint.com/os-scan-and-c-scan-algorithm
 
 <br />
-<br />
 
 #### :green_circle: The Problem:
 We would like that our algorithm allocate the elevators to reaching the best time for every passenger.
@@ -17,7 +16,6 @@ In order to get this results we have to took under consideration all its technic
 and the elevator position as a dependency our calls.
 It's not easy to know where each elevator locates every time (because its offline algorithm) and this is our challenge.
 
-<br />
 <br />
 
 #### :green_circle: Our Algorithm:
@@ -33,7 +31,6 @@ We save for each elevator its current time and last location and do the folowing
 5.  Choose the best time elevetor (fom src ---> dest) and allocate this elevator this call.
 
 <br />
-<br />
 
 #### :green_circle: Diagram:
 
@@ -41,17 +38,17 @@ We save for each elevator its current time and last location and do the folowing
 
 Building | call | average waiting time per call | uncompleted calls | 
 -------- | ---- | ----------------------------- |------------------ |
-   B1    |  a   |                               |                   |
-   B2    |  a   |                               |                   |
-   B3    |  a   |                               |                   |
-   B3    |  b   |                               |                   |
-   B3    |  c   |                               |                   |
-   B3    |  d   |                               |                   |
-   B4    |  a   |                               |                   |
-   B4    |  b   |                               |                   |
-   B4    |  c   |                               |                   |
-   B4    |  d   |                               |                   |
-   B5    |  a   |                               |                   |
-   B5    |  b   |                               |                   |
-   B5    |  c   |                               |                   |
-   B5    |  d   |                               |                   |
+   B1    |  a   |            112.92             |      0            |
+   B2    |  a   |            46.2               |       0           |
+   B3    |  a   |            37.37              |          0        |
+   B3    |  b   |            527.23             |          171      |
+   B3    |  c   |            578.23             |          103      |
+   B3    |  d   |            550.4              |         56        |
+   B4    |  a   |            26.11              |         0         |
+   B4    |  b   |            182.6              |       10          |
+   B4    |  c   |            184                |         3         |
+   B4    |  d   |            183.53             |        1          |
+   B5    |  a   |            20.85              |         0         |
+   B5    |  b   |            40.51              |          0        |
+   B5    |  c   |            44.91              |         8         |
+   B5    |  d   |            39.75              |          0        |
