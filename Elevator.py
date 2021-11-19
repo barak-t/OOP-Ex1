@@ -24,6 +24,9 @@ class Elevator(object):
         self.delay = self.close_t + self.start_t + self.stop_t + self.open_t
 
     def its_up(self):
+        """
+        Returns if the elevator is going up.
+        """
         return self.last_pos < self.curr_pos
 
     def arrive_time(self, call):
@@ -39,6 +42,12 @@ class Elevator(object):
         return time_to_src + time_src_dst
 
     def arrive_to(self, src, dest):
+        """
+        Calculate the time is take to move the elevator from src to dest floors
+        Args:
+            src: source floor
+            dest: destination floor
+        """
         return abs(src - dest) / self.speed + self.delay
 
     def add_call(self, call, t=0):
